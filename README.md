@@ -1,6 +1,6 @@
-# [Random Decimal Hex Binary and String Generator](https://harsh98trivedi.github.io/Random-Decimal-Hex-Binary-Generator)
+# [Random Decimal Hex Binary and String Generator](https://harsh98trivedi.github.io/Random-Decimal-Hex-Binary-and-String-Generator/)
 
-[![Random Decimal Hex Binary and String Generator](meta.jpg)](https://harsh98trivedi.github.io/Random-Decimal-Hex-Binary-Generator)
+[![Random Decimal Hex Binary and String Generator](meta.jpg)](https://harsh98trivedi.github.io/Random-Decimal-Hex-Binary-and-String-Generator/)
 
 A beautifully simple, perfectly centered, and accessible **Random Decimal Hex Binary and String Generator** that produces unique, non-repeating outputs in multiple formats — decimal numbers, hexadecimal, binary, and alphanumeric strings. Every result is guaranteed unique per mode and length on each device. The app features smooth animations, OCD-satisfying CSS, full accessibility, and persistent history between sessions.
 
