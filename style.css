@@ -1,0 +1,180 @@
+.unboxed-output {
+  font-size: clamp(5rem, 5vw, 5rem);
+  background: #fff;
+  color: #000;
+  border-radius: 0.5rem;
+  padding: 1.5rem 2.5rem;
+  font-weight: 800;
+  font-family: 'Poppins', monospace, sans-serif;
+  text-align: center;
+  max-width: 97vw;
+  min-width: 92px;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+  outline: none;
+  border: none;
+  margin-bottom: 1.5rem;
+  margin-top: 0.5rem;
+  box-shadow: 0 5px 10px #0002;
+}
+
+.modeBtn,
+.presetDigit,
+.action-btn {
+  min-width: 0.5rem;
+  min-height: 0.5rem;
+  font-size: 1.25rem;
+  padding: 0.5em 1.25em;
+  border-radius: 1em;
+  background: #fff;
+  color: #000;
+  border: 1px solid #222;
+  transition: 0.05s;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 5px 10px #0001;
+}
+
+.action-btn.main,
+.modeBtn.active {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+.action-btn:focus-visible,
+.modeBtn:focus-visible,
+.presetDigit:focus-visible {
+  outline: 1.5px solid #000;
+  outline-offset: 5px;
+  z-index: 5;
+}
+
+.num-input {
+  min-width: 5rem;
+  width: 5rem;
+  max-width: 10rem;
+  font-size: 0.75rem;
+  font-family: 'Poppins', monospace, sans-serif;
+  padding: 0.5rem;
+  text-align: center;
+  border-radius: 0.75rem;
+  border: 0.05rem solid #111;
+  background: #fff;
+  color: #000;
+  box-sizing: border-box;
+  outline: none;
+}
+
+input[type='range'] {
+  accent-color: #111;
+  border-radius: 0.75em;
+  margin: 0;
+  width: 2.5rem;
+  min-width: 5rem;
+  max-width: 12.5rem;
+  outline: none;
+}
+
+.roll-msg-overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10030;
+  background: rgba(1, 25, 105, 0.95);
+  color: #fff;
+  font-size: 2.5rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  pointer-events: none;
+  opacity: 0;
+  text-align: center;
+  text-shadow: 0 4px 16px #0008;
+  transition: opacity 0.05s, font-size 0.05s;
+  border-radius: 0;
+}
+
+.roll-msg-overlay.show {
+  opacity: 1;
+  animation: popFade 0.05s ease;
+}
+
+.copy-msg-overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  background: rgba(25, 100, 75, 0.95);
+  color: #fff;
+  font-size: 2.5rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.05s, font-size 0.05s;
+}
+
+.copy-msg-overlay.show {
+  opacity: 1;
+  animation: popFade 0.05s ease;
+}
+
+@keyframes popFade {
+  0% {
+    opacity: 0;
+    transform: scale(0.75);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  75% {
+    opacity: 0.75;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+.footer-credit {
+  color: #333;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  opacity: 0.75;
+  margin: 0.75rem auto 0.5rem auto;
+  user-select: auto;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  opacity: 0.75;
+}
+
+@media (max-width: 600px) {
+  .main-content,
+  .main-flex {
+    max-width: 100vw;
+  }
+  .action-row-centered {
+    max-width: 100vw;
+  }
+  .unboxed-output {
+    font-size: 2.5rem;
+  }
+  .footer-credit {
+    font-size: 1rem;
+  }
+}
