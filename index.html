@@ -3,25 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <title>Random Decimal Hex Binary and String Generator</title>
-  
-  <meta name="title" content="Random Decimal, Hex, Binary or String Generator" />
-  <meta name="description" content="Instantly Generate Numbers, Hex, Binary, or Strings" />
-  <meta name="keywords" content="Random Number Generator, Random Hex Generator, Random Binary Generator, Random String Generator, Random Generator" />
-  <meta name="image" content="https://raw.githubusercontent.com/harsh98trivedi/Random-Decimal-Hex-Binary-and-String-Generator/master/meta.jpg" />
-
-  <!-- Open Graph -->
-  <meta name="og:title" content="Random Decimal, Hex, Binary or String Generator" />
-  <meta name="og:description" content="Instantly Generate Numbers, Hex, Binary, or Strings" />
-  <meta name="og:image" content="https://raw.githubusercontent.com/harsh98trivedi/Random-Decimal-Hex-Binary-and-String-Generator/master/meta.jpg" />
-  <meta name="og:image:alt" content="Random Decimal, Hex, Binary or String Generator" />
-  <meta name="og:site_name" content="Random Decimal, Hex, Binary or String Generator" />
-
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Random Decimal, Hex, Binary or String Generator" />
-  <meta name="twitter:description" content="Instantly Generate Numbers, Hex, Binary, or Strings" />
-  <meta name="twitter:image" content="https://raw.githubusercontent.com/harsh98trivedi/Random-Decimal-Hex-Binary-and-String-Generator/master/meta.jpg" />
-
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
@@ -30,66 +11,61 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="shortcut icon" href="favicon.png" />
 </head>
-<body class="bg-[#ededed] font-[Poppins] min-h-screen min-w-full flex flex-col">
-  <div class="flex-1 grid place-items-center min-h-0 min-w-0">
-    <main class="w-full max-w-3xl grid grid-cols-1 gap-y-5 justify-items-center p-5">
-
-      <a href="https://harsh98trivedi.github.io/Random-Decimal-Hex-Binary-and-String-Generator/">
-        <img src="favicon.png" alt="Random Generator Logo" class="mx-auto w-36 h-36 rounded-full shadow-lg" />
+<body>
+  <div class="app-wrap">
+    <main class="main-content" role="main" aria-label="Random Number Generator App">
+      <a href="https://harsh98trivedi.github.io/Random-Decimal-Hex-Binary-and-String-Generator/" aria-label="Project Homepage">
+        <img src="favicon.png" alt="Random Generator Logo" class="logo" />
       </a>
-
-      <h1 class="text-center text-2xl font-extrabold text-black">
-        Random Decimal Hex Binary and String Generator
-      </h1>
-
-      <p class="text-center text-gray-700 text-base select-none mb-0">
-        Instantly Generate Numbers, Hex, Binary, or Strings
+      <h1 class="title">Random Decimal Hex Binary and String Generator</h1>
+      <p class="subtitle" id="desc">
+        Instantly generate random Decimal, Hexadecimal, Binary, and String values.
       </p>
-
-      <div class="flex flex-wrap justify-center items-center gap-2 w-full mt-2">
+      <nav aria-label="Mode selector" class="modes">
         <button class="modeBtn active" data-mode="decimal" aria-pressed="true">Decimal</button>
         <button class="modeBtn" data-mode="hex" aria-pressed="false">Hex</button>
         <button class="modeBtn" data-mode="binary" aria-pressed="false">Binary</button>
         <button class="modeBtn" data-mode="string" aria-pressed="false">String</button>
-      </div>
+      </nav>
 
-      <div id="presets" class="flex flex-wrap justify-center gap-3 w-full"></div>
+      <section id="presets" aria-label="Length presets" class="presets"></section>
 
-      <div class="flex flex-wrap justify-center items-center gap-3 w-full mt-4">
-        <label for="digit-slider" class="font-semibold text-black">Length:</label>
-        <input id="digit-slider" type="range" min="1" max="20" value="5" aria-valuenow="5" class="h-8 flex-1 min-w-[80px] max-w-[180px]" />
-        <input id="digit-count" type="number" min="1" max="20" value="5" class="num-input" aria-label="Length" />
-        <input id="max-slider" type="number" min="1" max="20" value="20" class="num-input" aria-label="Max Length" readonly disabled />
-        <span class="text-xs text-gray-500">Max</span>
-      </div>
+      <section class="controls" aria-label="Length controls and options">
+        <input type="range" id="digit-slider" min="1" max="20" value="5" aria-valuemin="1" aria-valuemax="20" aria-valuenow="5" />
+        <input type="number" id="digit-count" min="1" max="20" value="5" aria-labelledby="length-label" />
+        <input type="number" id="max-slider" min="1" max="1000" value="20" aria-label="Maximum length" />
+      </section>
 
-      <div class="flex items-center justify-center gap-2 my-4">
-        <input id="auto-copy-toggle" type="checkbox" class="h-5 w-5 cursor-pointer" />
-        <label for="auto-copy-toggle" class="select-none cursor-pointer text-gray-900 font-medium">
-          Enable Auto Copy on Load
+      <!-- FLEX ROW modern toggles -->
+      <section class="toggles-row">
+        <label class="toggle-switch">
+          <input type="checkbox" id="auto-copy-toggle" />
+          <span class="slider"></span>
+          <span class="toggle-label-text">Copy On Load</span>
         </label>
-      </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="dark-mode-toggle" />
+          <span class="slider"></span>
+          <span class="toggle-label-text">Dark Mode</span>
+        </label>
+      </section>
 
-      <div class="flex justify-center items-center gap-5 w-full mb-5">
-        <button id="generate-btn" class="actionBtn main flex items-center justify-center gap-2" aria-label="Roll Random Number">
+      <section class="actions">
+        <button id="generate-btn" class="actionBtn main">
           <i id="dice-icon" class="fas fa-dice fa-lg"></i> Roll
         </button>
-        <button id="copy-btn" class="actionBtn flex items-center justify-center gap-2" aria-label="Copy Output">
+        <button id="copy-btn" class="actionBtn">
           <i id="copy-icon" class="far fa-copy fa-lg"></i> Copy
         </button>
-      </div>
+      </section>
 
       <div id="number-display" class="unboxed-output" tabindex="0" aria-live="polite" aria-atomic="true">-----</div>
-
-      <div id="copy-msg" class="copy-msg-overlay" aria-live="polite" role="alert">Copied!</div>
-
+      <div id="copy-msg" class="copy-msg-overlay" role="alert" aria-live="assertive">Copied!</div>
     </main>
   </div>
-
-  <footer class="footer-credit text-center mb-5">
-    Made with <i class="fas fa-heart text-red-600 align-middle"></i> by <a href="https://harsh98trivedi.github.io" target="_blank" rel="noopener noreferrer" class="underline">Harsh Trivedi</a>
+  <footer class="footer" role="contentinfo">
+    Made with <i class="fa-solid fa-heart" aria-label="love" style="color:#c00; vertical-align: middle;"></i> by <a href="https://harsh98trivedi.github.io" target="_blank" rel="noopener noreferrer">Harsh Trivedi</a>
   </footer>
-
   <script src="app.js"></script>
 </body>
 </html>
