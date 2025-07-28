@@ -20,81 +20,74 @@
   <meta property="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Random Decimal, Hex, Binary or String Generator" />
   <meta name="twitter:description" content="Instantly Generate Numbers, Hex, Binary, or Strings" />
-  <meta name="twitter:image:src" content="https://raw.githubusercontent.com/harsh98trivedi/Random-Decimal-Hex-Binary-and-String-Generator/master/meta.jpg" />
-
-  <meta name="revisit-after" content="30 days" />
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/harsh98trivedi/Random-Decimal-Hex-Binary-and-String-Generator/master/meta.jpg" />
 
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <link rel="stylesheet" href="style.css" />
-  <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
+  <link rel="shortcut icon" href="favicon.png" />
 </head>
 <body class="bg-[#ededed] font-[Poppins] min-h-screen min-w-full flex flex-col">
   <div class="flex-1 grid place-items-center min-h-0 min-w-0">
-    <main class="w-full max-w-3xl grid grid-cols-1 gap-y-5 px-5 py-5 justify-items-center">
+    <main class="w-full max-w-3xl grid grid-cols-1 gap-y-5 justify-items-center p-5">
 
       <a href="https://harsh98trivedi.github.io/Random-Decimal-Hex-Binary-and-String-Generator/">
-        <img src="favicon.png" alt="Random Generator Logo" class="mx-auto w-36 h-36 shadow-lg rounded-full" />
+        <img src="favicon.png" alt="Random Generator Logo" class="mx-auto w-36 h-36 rounded-full shadow-lg" />
       </a>
 
-      <h1 class="text-2xl font-extrabold text-black text-center">
+      <h1 class="text-center text-2xl font-extrabold text-black">
         Random Decimal Hex Binary and String Generator
       </h1>
 
-      <p class="text-center text-gray-700 text-base select-none">
-        Instantly Generate Numbers, Hex, Binary, or Strings.
+      <p class="text-center text-gray-700 text-base select-none mb-0">
+        Instantly Generate Numbers, Hex, Binary, or Strings
       </p>
 
-      <div class="flex flex-wrap items-center justify-center gap-2 w-full">
-        <button data-mode="decimal" class="modeBtn active" aria-pressed="true">Decimal</button>
-        <button data-mode="hex" class="modeBtn" aria-pressed="false">Hex</button>
-        <button data-mode="binary" class="modeBtn" aria-pressed="false">Binary</button>
-        <button data-mode="string" class="modeBtn" aria-pressed="false">String</button>
+      <div class="flex flex-wrap justify-center items-center gap-2 w-full mt-2">
+        <button class="modeBtn active" data-mode="decimal" aria-pressed="true">Decimal</button>
+        <button class="modeBtn" data-mode="hex" aria-pressed="false">Hex</button>
+        <button class="modeBtn" data-mode="binary" aria-pressed="false">Binary</button>
+        <button class="modeBtn" data-mode="string" aria-pressed="false">String</button>
       </div>
 
-      <div id="presetsRow" class="flex flex-wrap gap-3 justify-center w-full"></div>
+      <div id="presets" class="flex flex-wrap justify-center gap-3 w-full"></div>
 
-      <div class="flex flex-wrap sm:flex-nowrap items-center justify-center gap-3 w-full">
-        <label id="lengthLabel" for="digitSlider" class="font-semibold text-black">Length:</label>
-        <input id="digitSlider" type="range" min="1" max="20" value="5" aria-valuenow="5" class="h-[32px] flex-1 min-w-[80px] max-w-[180px]" />
-        <input id="digitCount" type="number" min="1" max="20" value="5" class="num-input" aria-label="Length" />
-        <input id="maxSlider" type="number" min="1" max="20" value="20" class="num-input" aria-label="Max length" />
+      <div class="flex flex-wrap justify-center items-center gap-3 w-full mt-4">
+        <label for="digit-slider" class="font-semibold text-black">Length:</label>
+        <input id="digit-slider" type="range" min="1" max="20" value="5" aria-valuenow="5" class="h-8 flex-1 min-w-[80px] max-w-[180px]" />
+        <input id="digit-count" type="number" min="1" max="20" value="5" class="num-input" aria-label="Length" />
+        <input id="max-slider" type="number" min="1" max="20" value="20" class="num-input" aria-label="Max Length" readonly disabled />
         <span class="text-xs text-gray-500">Max</span>
       </div>
 
-      <!-- Auto Copy Toggle -->
-      <div class="flex items-center justify-center gap-2">
-        <input type="checkbox" id="autoCopyToggle" class="h-5 w-5 cursor-pointer" />
-        <label for="autoCopyToggle" class="select-none text-gray-800 font-medium cursor-pointer">
+      <div class="flex items-center justify-center gap-2 my-4">
+        <input id="auto-copy-toggle" type="checkbox" class="h-5 w-5 cursor-pointer" />
+        <label for="auto-copy-toggle" class="select-none cursor-pointer text-gray-900 font-medium">
           Enable Auto Copy on Load
         </label>
       </div>
 
-      <div class="flex flex-row gap-5 w-full justify-center">
-        <button id="generateBtn" class="action-btn main flex items-center justify-center">
-          <i class="fa-solid fa-dice mr-2"></i>Roll
+      <div class="flex justify-center items-center gap-5 w-full mb-5">
+        <button id="generate-btn" class="actionBtn main flex items-center justify-center gap-2" aria-label="Roll Random Number">
+          <i id="dice-icon" class="fas fa-dice fa-lg"></i> Roll
         </button>
-        <button id="copyBtn" class="action-btn flex items-center justify-center" aria-label="Copy output">
-          <i class="fa-regular fa-copy mr-2" id="copyIcon"></i>Copy
+        <button id="copy-btn" class="actionBtn flex items-center justify-center gap-2" aria-label="Copy Output">
+          <i id="copy-icon" class="far fa-copy fa-lg"></i> Copy
         </button>
       </div>
 
-      <span id="numberDisplay" class="unboxed-output w-full text-center" tabindex="0" aria-live="polite">
-        -----
-      </span>
+      <div id="number-display" class="unboxed-output" tabindex="0" aria-live="polite" aria-atomic="true">-----</div>
 
-      <div id="copyMsg" class="copy-msg-overlay" role="status" aria-live="polite">Copied!</div>
+      <div id="copy-msg" class="copy-msg-overlay" aria-live="polite" role="alert">Copied!</div>
+
     </main>
   </div>
 
-  <!-- Roll Overlay gets created dynamically in JS -->
-  
-  <footer class="footer-credit w-full text-center my-5">
-    Made with <i class="fa-solid fa-heart mx-1 text-red-600" aria-label="love"></i> by
-    <a href="https://harsh98trivedi.github.io" target="_blank" rel="noopener noreferrer">Harsh Trivedi</a>
+  <footer class="footer-credit text-center mb-5">
+    Made with <i class="fas fa-heart text-red-600 align-middle"></i> by <a href="https://harsh98trivedi.github.io" target="_blank" rel="noopener noreferrer" class="underline">Harsh Trivedi</a>
   </footer>
 
   <script src="app.js"></script>

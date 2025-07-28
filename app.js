@@ -1,5 +1,4 @@
 // --- Cookie helpers ---
-
 function setCookie(name, value, days = 365) {
   const expires = new Date();
   expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
@@ -20,8 +19,8 @@ function loadUserSettings() {
   let length = parseInt(localStorage.getItem('rng_length'), 10);
   let max = parseInt(localStorage.getItem('rng_maxLength'), 10);
 
-  if (isNaN(length) || length < 1) length = 5; // default length
-  if (isNaN(max) || max < length) max = 25;    // default max (>= length)
+  if (isNaN(length) || length < 1) length = 5; // default
+  if (isNaN(max) || max < length) max = 20;    // default
 
   return { length, max };
 }
@@ -35,20 +34,23 @@ function saveUserSettings(length, max) {
 function getRandomDecimal(digits) {
   if (digits <= 0) return '';
   let numberStr = '';
-  numberStr += Math.floor(Math.random() * 9) + 1; // First digit 1-9
+  numberStr += Math.floor(Math.random() * 9) + 1;
   for (let i = 1; i < digits; i++) numberStr += Math.floor(Math.random() * 10);
   return numberStr;
 }
+
 function getRandomHex(digits) {
   let result = '';
   for (let i = 0; i < digits; i++) result += Math.floor(Math.random() * 16).toString(16).toUpperCase();
   return result;
 }
+
 function getRandomBinary(digits) {
   let result = '';
   for (let i = 0; i < digits; i++) result += Math.floor(Math.random() * 2);
   return result;
 }
+
 function getRandomString(len) {
   const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let res = '';
@@ -57,29 +59,28 @@ function getRandomString(len) {
 }
 
 // --- DOM Elements ---
-const numberDisplay = document.getElementById('numberDisplay');
-const generateBtn = document.getElementById('generateBtn');
-const copyBtn = document.getElementById('copyBtn');
-const copyMsg = document.getElementById('copyMsg');
-const digitSlider = document.getElementById('digitSlider');
-const digitCount = document.getElementById('digitCount');
-const maxSlider = document.getElementById('maxSlider');
+const numberDisplay = document.getElementById('number-display');
+const generateBtn = document.getElementById('generate-btn');
+const copyBtn = document.getElementById('copy-btn');
+const copyMsg = document.getElementById('copy-msg');
+const digitSlider = document.getElementById('digit-slider');
+const digitCount = document.getElementById('digit-count');
+const maxSlider = document.getElementById('max-slider');
 const modeBtns = document.querySelectorAll('.modeBtn');
-const presetsRow = document.getElementById('presetsRow');
-const lengthLabel = document.getElementById('lengthLabel');
-const autoCopyToggle = document.getElementById('autoCopyToggle');
+const presets = document.getElementById('presets');
+const lengthLabel = document.getElementById('length-label');
+const autoCopyToggle = document.getElementById('auto-copy-toggle');
 
 let currentMode = 'decimal';
 
 // --- Animations ---
 function animateNumber() {
-  // Ensure number is black at start
   numberDisplay.style.color = "#111";
   gsap.to(numberDisplay, {
     color: '#2bb3d2',
     scale: 1.15,
     y: -15,
-    duration: 0.13,
+    duration: 0.15,
     ease: "power1.out",
     onComplete: () => {
       gsap.to(numberDisplay, {
@@ -93,79 +94,95 @@ function animateNumber() {
   });
 }
 
+
 function animateRoll() {
-  let rollOverlay = document.getElementById('rollMsg');
+  let rollOverlay = document.getElementById('roll-msg');
   if (!rollOverlay) {
     rollOverlay = document.createElement('div');
-    rollOverlay.id = 'rollMsg';
+    rollOverlay.id = 'roll-msg';
     rollOverlay.className = 'roll-msg-overlay';
-    rollOverlay.setAttribute('role', 'status');
-    rollOverlay.setAttribute('aria-live', 'polite');
+    rollOverlay.setAttribute('role', 'alert');
+    rollOverlay.setAttribute('aria-live', 'assertive');
     rollOverlay.textContent = 'Rolled!';
     document.body.appendChild(rollOverlay);
   } else {
     rollOverlay.textContent = 'Rolled!';
   }
   rollOverlay.classList.add("show");
-  gsap.fromTo(generateBtn, { scale: 1 }, { scale: 1.25, duration: 0.05, yoyo: true, repeat: 1, ease: "power2.out" });
-  gsap.fromTo(rollOverlay, { opacity: 0, scale: 1 }, {
-    opacity: 1, scale: 1.25, duration: 0.05, ease: "power1.out",
-    onComplete: () => {
-      gsap.to(rollOverlay, {
-        opacity: 0,
-        scale: 1,
-        duration: 0.05,
-        delay: 0.025,
-        onComplete: () => rollOverlay.classList.remove("show"),
-      });
-    },
-  });
+
+  // Dice icon spin animation
+  const diceIcon = document.getElementById('dice-icon');
+  gsap.fromTo(diceIcon,
+    { rotation: 0 },
+    { rotation: 360, duration: 0.15, ease: "power1.inOut" }
+  );
+
+  // Roll button pop animation
+  gsap.fromTo(generateBtn,
+    { scale: 1 },
+    { scale: 1.25, duration: 0.075, yoyo: true, repeat: 1, ease: "power2.out" }
+  );
+
+  // Overlay fade in/out animation total ~0.15s
+  gsap.timeline({
+    onComplete: () => rollOverlay.classList.remove("show")
+  })
+    .to(rollOverlay, { opacity: 1, scale: 1.25, duration: 0.05, ease: "power1.out" })
+    .to(rollOverlay, { opacity: 0, scale: 1, duration: 0.1, ease: "power1.in" });
 }
+
 
 function animateCopy() {
   copyMsg.classList.add("show");
   setTimeout(() => {
     copyMsg.classList.remove("show");
-  }, 900);
-  gsap.fromTo('#copyIcon', { rotate: 0 }, { rotate: 360, duration: 0.05, yoyo: true, repeat: 1 });
-  gsap.fromTo(copyBtn, { boxShadow: "0 0 0 #0000" }, { boxShadow: "0 0 15px #2228", duration: 0.05, yoyo: true, repeat: 1 });
-}
-function animateButton(btn) {
-  gsap.fromTo(btn, { scale: 1 }, { scale: 0.95, duration: 0.05, yoyo: true, repeat: 1 });
+  }, 150);
+  gsap.fromTo("#copy-icon", 
+    { rotation: 0 }, 
+    { rotation: 360, duration: 0.15, ease: "power1.inOut" }
+  );
+  gsap.fromTo(copyBtn, 
+    { boxShadow: "0 0 0 #0000" }, 
+    { boxShadow: "0 0 15px #2228", duration: 0.15, yoyo: true, repeat: 1 }
+  );
 }
 
-// --- Preset Buttons Setup ---
+function animateButton(btn) {
+  gsap.fromTo(btn, { scale: 1 }, { scale: 0.95, duration: 0.15, yoyo: true, repeat: 1 });
+}
+
+// --- Preset buttons ---
 function setPresets() {
-  presetsRow.innerHTML = `
+  presets.innerHTML = `
     <button class="presetDigit btn-neutral" data-digits="5">5</button>
     <button class="presetDigit btn-neutral" data-digits="10">10</button>
     <button class="presetDigit btn-neutral" data-digits="15">15</button>
     <button class="presetDigit btn-neutral" data-digits="20">20</button>
     <button class="presetDigit btn-neutral" data-digits="25">25</button>
   `;
-  document.querySelectorAll('.presetDigit').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      let val = parseInt(btn.getAttribute('data-digits'), 10);
+  const presetButtons = document.querySelectorAll(".presetDigit");
+  presetButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      let val = parseInt(button.getAttribute("data-digits"));
       const maxVal = parseInt(maxSlider.value, 10);
-      val = val > maxVal ? maxVal : val;
-
+      if (val > maxVal) val = maxVal;
       digitSlider.value = val;
       digitCount.value = val;
       saveUserSettings(val, maxVal);
       generateValue();
-      btn.blur();
-      animateButton(btn);
+      button.blur();
+      animateButton(button);
     });
   });
 }
 
-// --- Generate Value ---
+// --- Generate value ---
 function generateValue(animate = true) {
   let digits = parseInt(digitCount.value, 10);
   let max = parseInt(maxSlider.value, 10);
 
   if (isNaN(digits) || digits < 1) digits = 1;
-  else if (digits > max) digits = max;
+  if (digits > max) digits = max;
 
   digitSlider.value = digits;
   digitCount.value = digits;
@@ -177,41 +194,43 @@ function generateValue(animate = true) {
     return;
   }
 
-  let val = '';
+  let result = "";
   switch (currentMode) {
     case "decimal":
-      val = getRandomDecimal(digits);
+      result = getRandomDecimal(digits);
       break;
     case "hex":
-      val = getRandomHex(digits);
+      result = getRandomHex(digits);
       break;
     case "binary":
-      val = getRandomBinary(digits);
+      result = getRandomBinary(digits);
       break;
     case "string":
-      val = getRandomString(digits);
+      result = getRandomString(digits);
       break;
     default:
-      val = "-----";
+      result = "-----";
   }
-  numberDisplay.textContent = val;
+
+  numberDisplay.textContent = result;
 
   if (animate) animateNumber();
 }
 
-// --- Mode Buttons ---
-modeBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    modeBtns.forEach(b => {
-      b.classList.remove('active');
-      b.setAttribute('aria-pressed', 'false');
-    });
-    btn.classList.add('active');
-    btn.setAttribute('aria-pressed', 'true');
-    currentMode = btn.getAttribute('data-mode');
+// --- Event Listeners ---
 
-    // Save selected mode in cookie
-    setCookie('lastSelectedMode', currentMode, 365);
+modeBtns.forEach(btn => {
+  btn.addEventListener("click", () => {
+    modeBtns.forEach(b => {
+      b.classList.remove("active");
+      b.setAttribute("aria-pressed", "false");
+    });
+    btn.classList.add("active");
+    btn.setAttribute("aria-pressed", "true");
+    currentMode = btn.getAttribute("data-mode");
+
+    // Save mode for persistence
+    setCookie("lastSelectedMode", currentMode, 365);
 
     generateValue();
     btn.blur();
@@ -219,106 +238,103 @@ modeBtns.forEach(btn => {
   });
 });
 
-// --- Auto Copy Toggle ---
-autoCopyToggle.addEventListener('change', () => {
-  setCookie('autoCopyEnabled', autoCopyToggle.checked, 365);
+autoCopyToggle.addEventListener("change", () => {
+  setCookie("autoCopyEnabled", autoCopyToggle.checked, 365);
+  // Save immediately as preference
 });
 
-// --- Event Listeners ---
-
-digitSlider.addEventListener('input', () => {
-  let val = parseInt(digitSlider.value, 10);
+digitSlider.addEventListener("input", () => {
   const maxVal = parseInt(maxSlider.value, 10);
-  val = Math.min(val, maxVal);
+  let val = parseInt(digitSlider.value);
+  if (val > maxVal) val = maxVal;
   digitSlider.value = val;
   digitCount.value = val;
   saveUserSettings(val, maxVal);
   generateValue();
 });
 
-digitCount.addEventListener('input', () => {
-  let val = parseInt(digitCount.value, 10);
+digitCount.addEventListener("input", () => {
   const maxVal = parseInt(maxSlider.value, 10);
+  let val = parseInt(digitCount.value);
   if (isNaN(val) || val < 1) val = 1;
-  val = Math.min(val, maxVal);
+  if (val > maxVal) val = maxVal;
   digitCount.value = val;
   digitSlider.value = val;
   saveUserSettings(val, maxVal);
   generateValue();
 });
 
-maxSlider.addEventListener('input', () => {
-  let maxVal = parseInt(maxSlider.value, 10);
+maxSlider.addEventListener("input", () => {
+  let maxVal = parseInt(maxSlider.value);
   if (isNaN(maxVal) || maxVal < 1) maxVal = 20;
-  if (parseInt(digitSlider.value, 10) > maxVal) {
+  if (digitSlider.value > maxVal) {
     digitSlider.value = maxVal;
     digitCount.value = maxVal;
   }
   maxSlider.value = maxVal;
   digitSlider.max = maxVal;
   digitCount.max = maxVal;
-  saveUserSettings(parseInt(digitSlider.value, 10), maxVal);
+  saveUserSettings(parseInt(digitSlider.value), maxVal);
   generateValue();
 });
 
-generateBtn.addEventListener('click', () => {
+generateBtn.addEventListener("click", () => {
   generateValue(true);
   animateRoll();
 });
 
-copyBtn.addEventListener('click', () => {
-  const val = numberDisplay.textContent;
-  if (val && val !== "-----") {
+copyBtn.addEventListener("click", () => {
+  let val = numberDisplay.textContent;
+  if (val && val !== "-----" && val !== "All numbers used!") {
     navigator.clipboard.writeText(val);
     animateCopy();
     copyBtn.blur();
   }
 });
 
-// --- On Load ---
-window.onload = () => {
-  const autoCopyCookie = getCookie('autoCopyEnabled');
-  autoCopyToggle.checked = autoCopyCookie === "true";
+// --- Initialization ---
 
-  const lastModeCookie = getCookie('lastSelectedMode');
-  if (lastModeCookie && ["decimal", "hex", "binary", "string"].includes(lastModeCookie)) {
-    currentMode = lastModeCookie;
+window.onload = () => {
+  const autoCopyValue = getCookie("autoCopyEnabled");
+  autoCopyToggle.checked = autoCopyValue === "true";
+
+  let lastMode = getCookie("lastSelectedMode");
+  if (lastMode && ["decimal", "hex", "binary", "string"].includes(lastMode)) {
+    currentMode = lastMode;
   } else {
-    currentMode = 'decimal';
+    currentMode = "decimal";
   }
 
-  // Update mode buttons UI
   modeBtns.forEach(btn => {
-    const mode = btn.getAttribute('data-mode');
-    if (mode === currentMode) {
-      btn.classList.add('active');
-      btn.setAttribute('aria-pressed', 'true');
+    if (btn.getAttribute("data-mode") === currentMode) {
+      btn.classList.add("active");
+      btn.setAttribute("aria-pressed", "true");
     } else {
-      btn.classList.remove('active');
-      btn.setAttribute('aria-pressed', 'false');
+      btn.classList.remove("active");
+      btn.setAttribute("aria-pressed", "false");
     }
   });
 
-  const { length, max } = loadUserSettings();
+  const settings = loadUserSettings();
 
+  // Set max slider fixed properties
   maxSlider.min = 1;
   maxSlider.max = 1000;
-  maxSlider.value = max;
+  maxSlider.value = settings.max;
 
+  // Apply max to digit slider and input
   digitSlider.min = 1;
-  digitSlider.max = max;
-  digitSlider.value = length;
+  digitSlider.max = settings.max;
+  digitSlider.value = settings.length;
 
   digitCount.min = 1;
-  digitCount.max = max;
-  digitCount.value = length;
+  digitCount.max = settings.max;
+  digitCount.value = settings.length;
 
   setPresets();
   generateValue(false);
 
-  // If auto copy enabled, auto copy the initial value
-  if(autoCopyToggle.checked && numberDisplay.textContent !== "-----") {
-    // Re-generate with animation and copy to clipboard
+  if (autoCopyToggle.checked && numberDisplay.textContent !== "-----") {
     generateValue(true);
     navigator.clipboard.writeText(numberDisplay.textContent);
     animateCopy();
