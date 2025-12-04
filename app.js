@@ -66,6 +66,7 @@ function getRandomString(digits) {
 const numberDisplay = document.getElementById('number-display');
 const generateBtn = document.getElementById('generate-btn');
 const copyBtn = document.getElementById('copy-btn');
+const rollCopyBtn = document.getElementById('roll-copy-btn');
 const copyMsg = document.getElementById('copy-msg');
 const digitSlider = document.getElementById('digit-slider');
 const digitCount = document.getElementById('digit-count');
@@ -113,25 +114,26 @@ function animateRoll() {
   const diceIcon = document.getElementById('dice-icon');
   gsap.fromTo(diceIcon,
     { rotation: 0 },
-    { rotation: 360, duration: 0.15, ease: "power1.inOut" }
+    { rotation: 360, duration: 0.125, ease: "power1.inOut" }
   );
   gsap.fromTo(generateBtn,
     { scale: 1 },
-    { scale: 1.25, duration: 0.075, yoyo: true, repeat: 1, ease: "power2.out" }
+    { scale: 1.25, duration: 0.125, yoyo: true, repeat: 1, ease: "power2.out" }
   );
 
   gsap.timeline({
     onComplete: () => rollOverlay.classList.remove("show")
   })
-    .to(rollOverlay, { opacity: 1, scale: 1.25, duration: 0.075, ease: "power1.out" })
-    .to(rollOverlay, { opacity: 0, scale: 1, duration: 0.075, ease: "power1.in" });
+    .to(rollOverlay, { opacity: 1, scale: 1.25, duration: 0.125, ease: "power1.out" })
+    .to(rollOverlay, { opacity: 0, scale: 1, duration: 0.125, ease: "power1.in" });
 }
 
 function animateCopy() {
+  copyMsg.textContent = "Copied!";
   copyMsg.classList.add("show");
   setTimeout(() => {
     copyMsg.classList.remove("show");
-  }, 150);
+  }, 250);
   gsap.fromTo("#copy-icon",
     { rotation: 0 },
     { rotation: 360, duration: 0.15, ease: "power1.inOut" }
@@ -302,6 +304,37 @@ copyBtn.addEventListener('click', () => {
     navigator.clipboard.writeText(val);
     animateCopy();
     copyBtn.blur();
+  }
+});
+
+rollCopyBtn.addEventListener('click', () => {
+  generateValue(true);
+  
+  // Animate the button
+  gsap.fromTo(rollCopyBtn,
+    { scale: 1 },
+    { scale: 1.05, duration: 0.1, yoyo: true, repeat: 1 }
+  );
+  
+  // Animate the icon
+  const icon = document.getElementById('roll-copy-icon');
+  gsap.fromTo(icon,
+    { rotation: 0 },
+    { rotation: 360, duration: 0.1, ease: "back.out(0.75)" }
+  );
+  
+  let val = numberDisplay.textContent;
+  if (val && val !== "-----" && val !== "All numbers used!") {
+    navigator.clipboard.writeText(val);
+    
+    // Show copy message
+    copyMsg.textContent = "Rolled & Copied!";
+    copyMsg.classList.add("show");
+    setTimeout(() => {
+      copyMsg.classList.remove("show");
+    }, 250);
+    
+    rollCopyBtn.blur();
   }
 });
 

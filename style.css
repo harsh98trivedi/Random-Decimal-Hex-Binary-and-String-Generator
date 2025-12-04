@@ -287,8 +287,13 @@ body.dark-mode .toggle-switch input[type="checkbox"]:checked + .slider {
   display: flex;
   gap: 1rem;
   justify-content: center;
-  margin: 1rem 0;
+  margin: 0.5rem 0;
   user-select: none;
+  flex-wrap: wrap;
+}
+
+.secondary-actions {
+  margin-top: -0.5rem;
 }
 
 .actionBtn {
@@ -388,7 +393,7 @@ body.dark-mode .unboxed-output {
 
 .roll-msg-overlay.show,
 .copy-msg-overlay.show {
-  animation: popFade 0.15s ease forwards;
+  animation: popFade 0.25s ease forwards;
 }
 
 @keyframes popFade {
